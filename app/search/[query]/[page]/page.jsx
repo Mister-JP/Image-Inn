@@ -41,12 +41,12 @@ import {
   
     // Render the search results
     return (
-      <div className="bg-gray-100 min-h-screen px-2 py-10">
+      <div className="bg-[radial-gradient(circle_at_bottom_left,_var(--tw-gradient-stops))] from-green-600 via-white-600 to-light-blue-600 min-h-screen px-2 py-10">
         {/* Render a header indicating that these are the search results */}
-        <h1 className="text-4xl font-bold text-center mb-6 text-indigo-600">
-          Results
+        <h1 className="text-5xl mt-1 mb-1 text-center text-gray-700 bg-clip-text text-transparent rounded-lg bg-gradient-to-r from-pink-500 to-yellow-500 font-bold leading-loose tracking-widest">
+          Image Inn
         </h1>
-  
+
         {/* Container for the search results */}
         <div className="flex flex-wrap justify-center">
           {/* Iterate over the hits in the fetched data, if it exists */}
@@ -57,23 +57,31 @@ import {
               className="max-w-sm rounded overflow-hidden shadow-lg m-4" // Style the card
             >
               {/* Render an image for the hit */}
-              <img className="w-full" src={hit.previewURL} alt={hit.tags} />
-  
+              <a href={hit.largeImageURL}>
+                <img
+                  className="w-full object-contain transition-all transform hover:scale-110"
+                  style={{ maxHeight: "30vh" }}
+                  src={hit.largeImageURL}
+                  alt={hit.tags}
+                />
+              </a>
+
               {/* Container for the hit's details */}
               <div className="px-6 py-4">
                 {/* Render the user who uploaded the hit */}
                 <div className="font-bold text-xl mb-2">{hit.user}</div>
-  
+
                 {/* Render the hit's tags */}
                 <p className="text-gray-700 text-base">Tags: {hit.tags}</p>
-  
+
                 {/* Render the hit's view count, download count, and like count */}
                 <div className="flex items-center mt-2 text-gray-500 text-xs">
                   <EyeIcon className="h-4 w-4 mr-1" /> {/* View icon */}
                   <span>{hit.views}</span> {/* View count */}
                 </div>
                 <div className="flex items-center mt-2 text-gray-500 text-xs">
-                  <ArrowDownTrayIcon className="h-4 w-4 mr-1" /> {/* Download icon */}
+                  <ArrowDownTrayIcon className="h-4 w-4 mr-1" />{" "}
+                  {/* Download icon */}
                   <span>{hit.downloads}</span> {/* Download count */}
                 </div>
                 <div className="flex items-center mt-2 text-gray-500 text-xs">
@@ -81,17 +89,25 @@ import {
                   <span>{hit.likes}</span> {/* Like count */}
                 </div>
               </div>
-  
+
               {/* Render the hit's tags as hashtags */}
               <div className="px-6 pt-4 pb-2">
-                <span className="inline-block bg-indigo-200 rounded-full px-3 py-1 text-sm font-semibold text-indigo-700 mr-2 mb-2">
-                  #{hit.tags.split(", ")[0]} {/* First tag */}
-                </span>
-                <span className="inline-block bg-indigo-200 rounded-full px-3 py-1 text-sm font-semibold text-indigo-700 mr-2 mb-2">
-                  #{hit.tags.split(", ")[1]} {/* Second tag */}
-                </span>
+                {hit.tags.split(", ").map((tag, index) => {
+                  // Parse the searchParameters string and replace the query part with the tag
+                  const queryString = query.replace(/(^[^&]*)/, tag);
+
+                  return (
+                    <a
+                      key={index}
+                      href={`/search/${queryString}/1`}
+                      className="inline-block bg-indigo-200 rounded-full px-3 py-1 text-sm font-semibold text-indigo-700 mr-2 mb-2 transition-colors duration-200 ease-in-out hover:bg-gradient-to-r hover:text-white hover:from-pink-500 hover:to-blue-500 cursor-pointer"
+                    >
+                      #{tag} {/* Tag */}
+                    </a>
+                  );
+                })}
               </div>
-  
+
               {/* Render the user's profile picture and a download link for the hit */}
               <div className="px-6 pt-4 pb-2 flex justify-between items-center">
                 {/* User's profile picture */}
@@ -100,21 +116,22 @@ import {
                   src={hit.userImageURL}
                   alt={hit.user}
                 />
-  
+
                 {/* Download link */}
                 <a
                   href={hit.largeImageURL} // Link to the hit's large image URL
                   download // Download the image when the link is clicked
                   className="text-blue-500 hover:underline" // Style the link
                 >
-                  <ArrowDownTrayIcon className="h-4 w-4 mr-1" /> {/* Download icon */}
+                  <ArrowDownTrayIcon className="h-4 w-4 mr-1" />{" "}
+                  {/* Download icon */}
                   Download {/* Download text */}
                 </a>
               </div>
             </div>
           ))}
         </div>
-  
+
         {/* Pagination */}
         <div className="mt-4 flex justify-center">
           {/* If the current page is greater than 1, render a link to the previous page */}
@@ -126,7 +143,7 @@ import {
               Prev
             </a>
           )}
-  
+
           {/* If there are 20 hits (the maximum), render a link to the next page */}
           {data != null && data.hits.length == 20 && (
             <a
