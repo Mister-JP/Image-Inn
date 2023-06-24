@@ -1,4 +1,4 @@
-# [Image-Inn](https://image-inn.vercel.app/) 🖼️
+# Image-Inn Visit: [https://image-inn.vercel.app/] (https://image-inn.vercel.app/){:target="_blank"} 🖼️
 
 Image-Inn is a highly efficient, intuitive, and user-friendly image search web application designed to simplify the process of finding the perfect image. The application leverages the power of Pixabay API to provide high-quality image results based on user queries. Visit the application [here](https://image-inn.vercel.app/).
 
